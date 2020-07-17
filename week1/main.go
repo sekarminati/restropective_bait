@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/sekarminati/todo2/iterator"
 	"github.com/sekarminati/todo2/model"
+
 	"github.com/sekarminati/todo2/storage"
 )
 
@@ -60,8 +62,14 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// ITERATOR
 	fmt.Println("DATA PELANGGAN")
-	for i, cus := range list {
-		fmt.Printf("Row %v: ID = %v, Nama = %v, Alamat = %v, No. Telp = %v\n", i, cus.ID, cus.Name, cus.Address, cus.Phone)
+	itr := iterator.CustCollection{Cust: list}.CreateCustCollection()
+	fmt.Println(itr)
+	for itr.HasNext() {
+		v := itr.GetNext()
+		fmt.Printf("ID = %v, Nama = %v, Alamat = %v, No. Telp = %v\n", v.ID, v.Name, v.Address, v.Phone)
 	}
+
 }
