@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+    postgres:
+        image: postgres:12.3-alpine
+        volumes:
+        - db_data:/var/lib/postgresql/data
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: db
+
+    adminer:
+        image: adminer
+        ports:
+            - 8000:8080
+        environment:
+            ADMINER_DEFAULT_DB_DRIVER: pgsql
+            ADMINER_DEFAULT_SERVER: postgres
+            ADMINER_DEFAULT_USER: postgres
+            ADMINER_DEFAULT_PASSWORD: password
+
+    # app:
+    #     image: 'golang:alpine'
+    #     build: $GOPATH/src/github.com/sekarminati/restropective_bait/week1
+    #     depends_on: 
+    #         - postgres
+        # command: go run main.go
+volumes:
+    db_data: {}

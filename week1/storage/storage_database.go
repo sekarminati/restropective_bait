@@ -11,7 +11,7 @@ import (
 type Database struct{}
 
 func InitDB() *sql.DB {
-	db, err := sql.Open("postgres", "host=127.0.0.1 port=5432 user=postgres password=password dbname=db sslmode=disable")
+	db, err := sql.Open("postgres", "host=host.docker.internal port=5432 user=postgres password=password dbname=db sslmode=disable")
 	if err != nil {
 		log.Fatal(err)
 	}

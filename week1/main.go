@@ -40,7 +40,7 @@ func main() {
 
 	// CREATE
 	obj := model.Customer{
-		ID:      1,
+		ID:      3,
 		Name:    "Sekar",
 		Address: "Jakarta",
 		Phone:   "085822339848",
@@ -51,7 +51,7 @@ func main() {
 	fmt.Printf("Data berhasil diinput!\n\n")
 
 	// DETAIL
-	cus, err := memStore.Detail(1)
+	cus, err := memStore.Detail(obj.ID)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -66,7 +66,7 @@ func main() {
 	// ITERATOR
 	fmt.Println("DATA PELANGGAN")
 	itr := iterator.CustCollection{Cust: list}.CreateCustCollection()
-	fmt.Println(itr)
+
 	for itr.HasNext() {
 		v := itr.GetNext()
 		fmt.Printf("ID = %v, Nama = %v, Alamat = %v, No. Telp = %v\n", v.ID, v.Name, v.Address, v.Phone)
