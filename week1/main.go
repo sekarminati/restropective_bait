@@ -2,18 +2,66 @@ package main
 
 import (
 	"fmt"
+	"log"
+
+	"github.com/sekarminati/todo2/model"
+	"github.com/sekarminati/todo2/storage"
 )
 
+type StorageType int
+
+const (
+	StorageTypeMemory StorageType = iota
+	StorageTypeMock
+	StorageTypeDatabase
+)
+
+// Factory
+func getStorage(t StorageType) storage.Storage {
+	var s storage.Storage
+	switch t {
+	case StorageTypeMemory:
+		s = storage.NewMemory()
+	case StorageTypeMock:
+		s = storage.Mock{}
+	case StorageTypeDatabase:
+		s = storage.Database{}
+	default:
+		log.Fatal("storage unknown")
+	}
+	return s
+}
+
 func main() {
-	// println("Hello World")
-	// fmt.Printf("Hello, %s\n", "Gopher")
+	//inisialisasi
+	var memStore = getStorage(StorageTypeDatabase)
 
-	// m := model.Todo{
-	// 	Title:       "Belajar Go",
-	// 	Description: "BA IT 2020",
-	// }
-	// fmt.Printf("Todo: %s - %s\n", m.Title, m.Description)
+	// CREATE
+	obj := model.Customer{
+		ID:      1,
+		Name:    "Sekar",
+		Address: "Jakarta",
+		Phone:   "085822339848",
+	}
+	if err := memStore.Create(obj); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("Data berhasil diinput!\n\n")
 
-	var a Reader
-	fmt.Println(a.Read())
+	// DETAIL
+	cus, err := memStore.Detail(1)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("ID = %v, Nama = %v, Alamat = %v, No. Telp = %v\n\n", cus.ID, cus.Name, cus.Address, cus.Phone)
+
+	// SELECT ALL/LIST
+	list, err := memStore.List()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("DATA PELANGGAN")
+	for i, cus := range list {
+		fmt.Printf("Row %v: ID = %v, Nama = %v, Alamat = %v, No. Telp = %v\n", i, cus.ID, cus.Name, cus.Address, cus.Phone)
+	}
 }
